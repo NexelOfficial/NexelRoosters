@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NexelRoosters</string>
+    <string name="login">Login</string>
+    <string name="loading_schedule">Rooster aan het laden...</string>
+    <string name="today">Vandaag</string>
+    <string name="schedule"><![CDATA[Rooster]]></string>
+    <string name="no_classes"><![CDATA[Geen lessen vandaag!]]></string>
+    <string name="shortend_number">e</string>
+    <string name="classText">Les</string>
+    <string name="otherText">Overige</string>
+    <string name="examText">Examen</string>
+    <string name="choiceText">Keuze</string>
+    <string name="talkText">Gesprek</string>
+    <string name="activityText">Activiteit</string>
+    <string name="search">Zoeken</string>
+    <string name="searchSchedule"><![CDATA[Zoek een rooster]]></string>
+    <string name="noInternet"><![CDATA[Je bent niet verbonden met het internet!]]></string>
+    <string name="you">jou</string>
+</resources>

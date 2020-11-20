@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">NexelSchedule</string>
+    <string name="login">Login</string>
+    <string name="loading_schedule">Loading schedule...</string>
+    <string name="today">Today</string>
+    <string name="schedule"><![CDATA[Schedule]]></string>
+    <string name="no_classes"><![CDATA[No classes today!]]></string>
+    <string name="shortend_number">nd</string>
+    <string name="classText">Class</string>
+    <string name="otherText">Other</string>
+    <string name="examText">Exam</string>
+    <string name="choiceText">Choice</string>
+    <string name="talkText">Talk</string>
+    <string name="activityText">Activity</string>
+    <string name="search">Search</string>
+    <string name="searchSchedule"><![CDATA[Search a schedule]]></string>
+    <string name="noInternet"><![CDATA[You\'re not connected to the internet!]]></string>
+    <string name="you">you</string>
+</resources>
