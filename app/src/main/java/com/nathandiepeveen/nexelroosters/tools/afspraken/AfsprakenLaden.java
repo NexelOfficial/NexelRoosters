@@ -69,7 +69,11 @@ public class AfsprakenLaden extends AsyncTask<String, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid)
     {
+        ListView classesList = main.findViewById(R.id.classesList);
         TextView loadingClasses = main.findViewById(R.id.loadingClasses);
+        ScheduleAdapter classesAdapter = new ScheduleAdapter(main, R.layout.listview_item, classesArray);
+        classesList.setAdapter(classesAdapter);
+
         Animation anim_down = AnimationUtils.loadAnimation(main, R.anim.move_down);
         loadingClasses.startAnimation(anim_down);
         super.onPostExecute(aVoid);
