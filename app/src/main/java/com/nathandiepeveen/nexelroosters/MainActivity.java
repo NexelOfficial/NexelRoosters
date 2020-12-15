@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 afsprakenLaden(Integer.parseInt(dateText.getText().toString()) + 1);
             }
             public void onSwipeBottom() {
+                classesMap.remove(currentDay);
                 afsprakenLaden(currentDay);
             }
         });

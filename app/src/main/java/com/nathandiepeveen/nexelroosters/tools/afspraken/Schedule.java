@@ -7,14 +7,16 @@ public class Schedule {
     String classHour;
     String classInformation;
     String classChange;
+    Boolean cancelled;
     Date loadTime;
 
-    public Schedule(String classHour, String classInformation, String classChange)
+    public Schedule(String classHour, String classInformation, String classChange, Boolean state)
     {
         this.classHour = classHour;
         this.classInformation = classInformation;
         this.classChange = classChange;
         this.loadTime = new Date();
+        this.cancelled = state;
     }
 
     public String getClassHour() {
@@ -31,6 +33,10 @@ public class Schedule {
 
     public String getClassInformation() {
         return classInformation;
+    }
+
+    public Boolean getCancelled() {
+        return cancelled;
     }
 
     public void setClassInformation(String classInformation) {

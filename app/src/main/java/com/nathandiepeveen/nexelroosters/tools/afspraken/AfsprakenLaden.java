@@ -58,9 +58,13 @@ public class AfsprakenLaden extends AsyncTask<String, Void, Void> {
         List<Appointment> appointments = api.getAppointments(data[1], startDate, endDate, getType());
         if (appointments.size() != 0)
         {
-            for (Appointment app : appointments)
-                createAppointmentFromZermelo(app);
-
+            for (Appointment app : appointments) {
+                try {
+                    createAppointmentFromZermelo(app);
+                } catch (AppointmentParticipationException e) {
+                    e.printStackTrace();
+                }
+            }
             main.classesMap.put(data[0], classesArray);
         }
         return null;
@@ -79,13 +83,11 @@ public class AfsprakenLaden extends AsyncTask<String, Void, Void> {
         super.onPostExecute(aVoid);
     }
 
-    void createAppointmentFromZermelo(Appointment app)
-    {
-        if (app.isCancelled())
-            return;
+    void createAppointmentFromZermelo(Appointment app) throws AppointmentParticipationException {
 
         if (!app.getChangeDescription().isEmpty() && !app.isModified())
-            return;
+            if (!app.isNew())
+                return;
 
         StringBuilder teachersString = new StringBuilder(), locationString = new StringBuilder(), subjectsString = new StringBuilder(), groupsString = new StringBuilder();
         List<String> subjectsList = app.getSubjects(), locationList = app.getLocations(), teachersList = app.getTeachers(), groupsList = app.getGroups();
@@ -104,7 +106,7 @@ public class AfsprakenLaden extends AsyncTask<String, Void, Void> {
 
         String toAdd = "" + subjectsString + groupsString + "\n" + locationString + "- " + teachersString + "(" + startTime + " - " + endTime + ")";
 
-        classesArray.add(new Schedule(appHour, toAdd, app.getChangeDescription()));
+        classesArray.add(new Schedule(appHour, toAdd, app.getChangeDescription(), false));
     }
 
     private String getType()

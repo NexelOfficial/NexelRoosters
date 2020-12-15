@@ -12,6 +12,7 @@ import java.util.List;
 
 import nl.mrwouter.zermelo4j.ZermeloAPI;
 import nl.mrwouter.zermelo4j.appointments.Appointment;
+import nl.mrwouter.zermelo4j.appointments.AppointmentParticipationException;
 
 public class AfsprakenToevoegen extends AsyncTask<String, Void, Void> {
 
@@ -38,9 +39,13 @@ public class AfsprakenToevoegen extends AsyncTask<String, Void, Void> {
 
         List<Appointment> appointments = api.getAppointments(data[1], startDate, endDate, getType());
         if (appointments.size() != 0) {
-            for (Appointment app : appointments)
-                laden.createAppointmentFromZermelo(app);
-
+            for (Appointment app : appointments) {
+                try {
+                    laden.createAppointmentFromZermelo(app);
+                } catch (AppointmentParticipationException e) {
+                    e.printStackTrace();
+                }
+            }
             main.classesMap.put(data[0], laden.classesArray);
         }
 
