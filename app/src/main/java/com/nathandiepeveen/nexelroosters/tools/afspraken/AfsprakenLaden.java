@@ -106,7 +106,7 @@ public class AfsprakenLaden extends AsyncTask<String, Void, Void> {
 
         String toAdd = "" + subjectsString + groupsString + "\n" + locationString + "- " + teachersString + "(" + startTime + " - " + endTime + ")";
 
-        classesArray.add(new Schedule(appHour, toAdd, app.getChangeDescription(), false));
+        classesArray.add(new Schedule(appHour, toAdd, app.getChangeDescription(), app.isCancelled()));
     }
 
     private String getType()

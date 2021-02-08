@@ -2,13 +2,17 @@ package com.nathandiepeveen.nexelroosters.tools.search;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.nathandiepeveen.nexelroosters.MainActivity;
 import com.nathandiepeveen.nexelroosters.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import nl.mrwouter.zermelo4j.ZermeloAPI;
@@ -23,14 +27,16 @@ public class GetSearchItems extends AsyncTask<Void, Void, Void> {
 
     private ZermeloAPI api;
     private String schoolInYears;
+    private Spinner schoolYears;
 
     @Override
     protected Void doInBackground(Void... voids) {
 
         this.api = main.api;
+        this.schoolYears = main.findViewById(R.id.schoolYear);
 
         try {
-            this.schoolInYears = String.valueOf(getLatestSchoolYear());
+            this.schoolInYears = String.valueOf(schoolYears.getSelectedItem());
             main.allStudents = api.getUsers(schoolInYears).getStudentsAsArray();
             main.allStudents.addAll(api.getUsers(schoolInYears).getEmployeesAsArray());
             main.usersAdapter = new ArrayAdapter<>(main, android.R.layout.simple_list_item_1, main.allStudents);
@@ -38,7 +44,6 @@ public class GetSearchItems extends AsyncTask<Void, Void, Void> {
         } catch(NullPointerException ex) {
             Log.e("SearchResultException", "One or more search lists failed to load.");
         }
-
         return null;
     }
 
@@ -46,7 +51,6 @@ public class GetSearchItems extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         ListView allUsers = main.findViewById(R.id.allUsers);
         allUsers.setAdapter(main.usersAdapter);
-
         super.onPostExecute(aVoid);
     }
 
@@ -63,16 +67,4 @@ public class GetSearchItems extends AsyncTask<Void, Void, Void> {
             main.allStudents.add(classroom);
         }
     }
-
-    private int getLatestSchoolYear()
-    {
-        String[] allYears = api.getUser().getSchoolInSchoolYears().toString().replace("[", "").replace("]", "").split(",");
-        ArrayList<Integer> allYearsInt = new ArrayList<>();
-        for (String year : allYears)
-        {
-            allYearsInt.add(Integer.parseInt(year));
-        }
-        return Collections.max(allYearsInt);
-    }
-
 }

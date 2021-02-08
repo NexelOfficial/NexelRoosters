@@ -41,6 +41,9 @@ public class ScheduleAdapter extends ArrayAdapter<Schedule> {
         mainInformation.setText(getItem(position).getClassInformation());
         change.setText(getItem(position).getClassChange());
 
+        if (getItem(position).getCancelled())
+            hourNumber.setBackgroundResource(R.drawable.round_button_cancelled);
+
         return convertView;
     }
 }

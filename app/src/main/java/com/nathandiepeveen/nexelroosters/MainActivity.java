@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,6 +33,7 @@ import com.nathandiepeveen.nexelroosters.tools.afspraken.AfsprakenLaden;
 import com.nathandiepeveen.nexelroosters.tools.afspraken.AfsprakenToevoegen;
 import com.nathandiepeveen.nexelroosters.tools.OnSwipeTouchListener;
 import com.nathandiepeveen.nexelroosters.tools.TimeConvertion;
+import com.nathandiepeveen.nexelroosters.tools.search.AddYears;
 import com.nathandiepeveen.nexelroosters.tools.search.SearchSchedule;
 
 import java.io.BufferedReader;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private String numberStand = "up";
     private TextView loadingClasses, dateDisplay, dateText, dayDisplay, weekDisplay, numberDisplay, scheduleTitle;
     private ListView classesList = null, allUsers = null;
+    private Spinner schoolYears;
     private FloatingActionButton homeButton = null;
     private Animation anim_up;
     private CardView searchWindow;
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     public HashMap<String, String> classroomsMap = new HashMap<String, String>();
 
     public ArrayList<String> allStudents = new ArrayList<>();
-    public ArrayAdapter<String> usersAdapter;
+    public ArrayAdapter<String> usersAdapter, yearsAdapter;
 
     private void initializeItems()
     {
@@ -75,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         dayDisplay = findViewById(R.id.dayDisplay);
         classesList = findViewById(R.id.classesList);
         loadingClasses = findViewById(R.id.loadingClasses);
+        schoolYears = findViewById(R.id.schoolYear);
         allUsers = findViewById(R.id.allUsers);
         searchWindow = findViewById(R.id.searchForUser);
         homeButton = findViewById(R.id.floatingActionButton2);
@@ -126,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         new ButtonListeners(MainActivity.this).listenToUserInList();
         new ButtonListeners(MainActivity.this).listenToRefreshButton();
 
+        new AddYears(MainActivity.this).execute();
         new SearchSchedule(MainActivity.this).getScheduleFromSearch();
         runNetworkTest.run();
 

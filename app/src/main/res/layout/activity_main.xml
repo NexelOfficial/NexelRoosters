@@ -274,8 +274,9 @@
             android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="50dp"
+            android:layout_marginRight="90dp"
             android:ems="10"
             android:inputType="textPersonName" />
 
@@ -303,14 +304,22 @@
             android:id="@+id/numberText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="58dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="58dp"
+            android:layout_marginRight="90dp"
             android:gravity="center"
             android:tag="1"
             android:text="Afkorting of nummer"
             android:textSize="18dp"
             android:visibility="visible" />
 
+        <Spinner
+            android:id="@+id/schoolYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="220dp"
+            android:layout_marginTop="58dp"
+            android:layout_marginRight="10dp" />
 
     </androidx.cardview.widget.CardView>
 
