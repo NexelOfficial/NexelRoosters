@@ -25,13 +25,15 @@ import nl.mrwouter.zermelo4j.ZermeloAPI;
 import nl.mrwouter.zermelo4j.appointments.Appointment;
 import nl.mrwouter.zermelo4j.appointments.AppointmentParticipationException;
 
-public class AfsprakenLaden extends AsyncTask<String, Void, Void> {
-
+public class AfsprakenLaden extends AsyncTask<String, Void, Void>
+{
     private MainActivity main;
 
-    public AfsprakenLaden(MainActivity main) {
+    public AfsprakenLaden(MainActivity main)
+    {
         this.main = main;
     }
+
     public TimeConvertion convert = new TimeConvertion();
 
     public ArrayList<Schedule> classesArray = new ArrayList<Schedule>();
@@ -40,7 +42,8 @@ public class AfsprakenLaden extends AsyncTask<String, Void, Void> {
     protected Void doInBackground(String... data)
     {
         // Check if the day already exists in HashMap
-        if (main.classesMap.containsKey(data[0])) {
+        if (main.classesMap.containsKey(data[0]))
+        {
             classesArray.addAll(main.classesMap.get(data[0]));
             return null;
         }
@@ -53,15 +56,19 @@ public class AfsprakenLaden extends AsyncTask<String, Void, Void> {
         ZermeloAPI api = main.api;
 
         Date startDate = convert.getStartDate(Integer.parseInt(data[0]));
-        Date endDate = convert.getStartDate((Integer.parseInt(data[0]))+1);
+        Date endDate = convert.getStartDate((Integer.parseInt(data[0])) + 1);
 
         List<Appointment> appointments = api.getAppointments(data[1], startDate, endDate, getType());
         if (appointments.size() != 0)
         {
-            for (Appointment app : appointments) {
-                try {
+            for (Appointment app : appointments)
+            {
+                try
+                {
                     createAppointmentFromZermelo(app);
-                } catch (AppointmentParticipationException e) {
+                }
+                catch (AppointmentParticipationException e)
+                {
                     e.printStackTrace();
                 }
             }
@@ -83,11 +90,12 @@ public class AfsprakenLaden extends AsyncTask<String, Void, Void> {
         super.onPostExecute(aVoid);
     }
 
-    void createAppointmentFromZermelo(Appointment app) throws AppointmentParticipationException {
-
-        if (!app.getChangeDescription().isEmpty() && !app.isModified())
-            if (!app.isNew())
-                return;
+    void createAppointmentFromZermelo(Appointment app) throws AppointmentParticipationException
+    {
+        if (!app.isCancelled())
+            if (!app.getChangeDescription().isEmpty() && !app.isModified())
+                if (!app.isNew())
+                    return;
 
         StringBuilder teachersString = new StringBuilder(), locationString = new StringBuilder(), subjectsString = new StringBuilder(), groupsString = new StringBuilder();
         List<String> subjectsList = app.getSubjects(), locationList = app.getLocations(), teachersList = app.getTeachers(), groupsList = app.getGroups();
@@ -106,7 +114,25 @@ public class AfsprakenLaden extends AsyncTask<String, Void, Void> {
 
         String toAdd = "" + subjectsString + groupsString + "\n" + locationString + "- " + teachersString + "(" + startTime + " - " + endTime + ")";
 
-        classesArray.add(new Schedule(appHour, toAdd, app.getChangeDescription(), app.isCancelled()));
+        Schedule finalSchedule = new Schedule(appHour, toAdd, app.getChangeDescription(), app.isCancelled());
+
+        for (Schedule existing : classesArray)
+        {
+            if (existing.getClassInformation().equals(toAdd) && existing.getClassHour().equals(appHour))
+            {
+                String existingChange = existing.getClassChange();
+                boolean isCancelled = existing.getCancelled();
+
+                if (!isCancelled && app.isCancelled())
+                    isCancelled = app.isCancelled();
+
+                finalSchedule = new Schedule(appHour, toAdd, app.getChangeDescription() + existingChange, isCancelled);
+                classesArray.set(classesArray.indexOf(existing), finalSchedule);
+                return;
+            }
+        }
+
+        classesArray.add(finalSchedule);
     }
 
     private String getType()

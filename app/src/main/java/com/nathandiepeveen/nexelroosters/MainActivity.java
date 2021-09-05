@@ -47,8 +47,8 @@ import java.util.HashMap;
 
 import nl.mrwouter.zermelo4j.ZermeloAPI;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity
+{
     private String numberStand = "up";
     private TextView loadingClasses, dateDisplay, dateText, dayDisplay, weekDisplay, numberDisplay, scheduleTitle;
     private ListView classesList = null, allUsers = null;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private void initializeItems()
     {
         dateText = findViewById(R.id.scheduleDay);
-        scheduleTitle  = findViewById(R.id.scheduleTitle);
+        scheduleTitle = findViewById(R.id.scheduleTitle);
         dateDisplay = findViewById(R.id.todayDisplay);
         weekDisplay = findViewById(R.id.weekDisplay);
         dayDisplay = findViewById(R.id.dayDisplay);
@@ -101,22 +101,30 @@ public class MainActivity extends AppCompatActivity {
         if (!new WebChecks(MainActivity.this).isLoggedIn())
             return;
 
-        classesList.setOnTouchListener(new OnSwipeTouchListener(this) {
-            public void onSwipeRight() {
+        classesList.setOnTouchListener(new OnSwipeTouchListener(this)
+        {
+            public void onSwipeRight()
+            {
                 afsprakenLaden(Integer.parseInt(dateText.getText().toString()) - 1);
             }
-            public void onSwipeLeft() {
+
+            public void onSwipeLeft()
+            {
                 afsprakenLaden(Integer.parseInt(dateText.getText().toString()) + 1);
             }
-            public void onSwipeBottom() {
+
+            public void onSwipeBottom()
+            {
                 classesMap.remove(currentDay);
                 afsprakenLaden(currentDay);
             }
         });
 
-        homeButton.setOnClickListener(new View.OnClickListener() {
+        homeButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 afsprakenLaden(0);
                 homeButton.setVisibility(View.INVISIBLE);
             }
@@ -130,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
         new ButtonListeners(MainActivity.this).listenToUserInList();
         new ButtonListeners(MainActivity.this).listenToRefreshButton();
 
-        new AddYears(MainActivity.this).execute();
         new SearchSchedule(MainActivity.this).getScheduleFromSearch();
         runNetworkTest.run();
 
@@ -140,25 +147,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(Configuration newConfig)
+    {
         super.onConfigurationChanged(newConfig);
     }
 
     public Handler handler = new Handler();
 
-    public Runnable runNetworkTest = new Runnable() {
+    public Runnable runNetworkTest = new Runnable()
+    {
         @Override
-        public void run() {
+        public void run()
+        {
             new WebChecks(MainActivity.this).isNetworkConnected();
-            handler.postDelayed(this, 3*1000);
+            handler.postDelayed(this, 3 * 1000);
         }
     };
 
     public void afsprakenLaden(int day)
     {
-        loadingClasses.startAnimation(anim_up);
         new AfsprakenLaden(MainActivity.this).execute(String.valueOf(day), scheduleUser);
-        dateText.setText(day + "");
+
+        loadingClasses.startAnimation(anim_up);
+        dateText.setText(String.valueOf(day));
         setupDayButtons(day);
         currentDay = day;
         setText(day);
@@ -171,9 +182,12 @@ public class MainActivity extends AppCompatActivity {
         String dateString = date + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR);
         calendar.setTime(convert.ConvertFormattedDateToMilliSeconds(dateString));
         dateString = convert.ConvertMilliSecondsToFormattedMonth(convert.ConvertFormattedDateToMilliSeconds(dateString).getTime());
-        if (day == 0) {
+        if (day == 0)
+        {
             homeButton.setVisibility(View.INVISIBLE);
-        } else {
+        }
+        else
+        {
             homeButton.setVisibility(View.VISIBLE);
         }
         dateDisplay.setText(dateString);
@@ -184,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
     public void setupDayButtons(final int day)
     {
         int j = 1;
+
         for (int i = day - 3; i < day + 4; i++)
         {
             int id = getResources().getIdentifier("day" + j, "id", getPackageName());
@@ -191,9 +206,11 @@ public class MainActivity extends AppCompatActivity {
             String btnText = new TimeConvertion().ConvertDayToFormattedDay(i);
             btn.setText(btnText);
             btn.setTag(i);
-            btn.setOnClickListener(new View.OnClickListener() {
+            btn.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View view)
+                {
                     int buttonDay = (int) btn.getTag();
                     afsprakenLaden(buttonDay);
                     currentDay = buttonDay;
@@ -205,46 +222,54 @@ public class MainActivity extends AppCompatActivity {
 
     public void writeToFile(String fileName, String data)
     {
-        try {
+        try
+        {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput(fileName, Context.MODE_PRIVATE));
             outputStreamWriter.write(data);
             outputStreamWriter.close();
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             Log.e("Exception", "File write failed: " + e.toString());
         }
     }
 
-    public String readFile(String file) throws IOException {
+    public String readFile(String file) throws IOException
+    {
         FileInputStream fis = openFileInput(file);
         InputStreamReader isr = new InputStreamReader(fis);
 
         BufferedReader buffer = new BufferedReader(isr);
-        StringBuffer stringBugger = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
 
         String lines;
-        while((lines = buffer.readLine()) != null) {
-            stringBugger.append(lines + "\n");
+        while ((lines = buffer.readLine()) != null)
+        {
+            stringBuilder.append(lines + "\n");
         }
-        return stringBugger.toString();
+        return stringBuilder.toString();
     }
 
-    public void getNumberText() {
+    public void getNumberText()
+    {
         final EditText searchField = findViewById(R.id.editText);
-        searchField.addTextChangedListener(new TextWatcher() {
-
+        searchField.addTextChangedListener(new TextWatcher()
+        {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after)
+            {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int start, int count, int after) {
+            public void onTextChanged(CharSequence charSequence, int start, int count, int after)
+            {
                 numberDisplay = findViewById(R.id.numberText);
                 Animation fadeout = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fadeout);
                 Animation fadein = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fadein);
 
-                if (count >= 0 && numberStand == "up") {
+                if (count >= 0 && numberStand.equals("up"))
+                {
                     allUsers.setVisibility(View.VISIBLE);
                     numberDisplay.startAnimation(fadeout);
                     numberStand = "down";
@@ -253,7 +278,8 @@ public class MainActivity extends AppCompatActivity {
                     resizeAnimation.setDuration(350);
                     searchWindow.startAnimation(resizeAnimation);
                 }
-                if (searchField.getText().toString().length() == 0) {
+                if (searchField.getText().toString().length() == 0)
+                {
                     allUsers.setVisibility(View.INVISIBLE);
                     numberDisplay.startAnimation(fadein);
                     numberStand = "up";
@@ -263,18 +289,20 @@ public class MainActivity extends AppCompatActivity {
                     searchWindow.startAnimation(resizeAnimation);
                 }
 
-                try {
+                try
+                {
                     MainActivity.this.usersAdapter.getFilter().filter(charSequence.toString());
-                } catch (NullPointerException ex) {
+                } catch (NullPointerException ex)
+                {
                     Log.e("FilterException", "Failed to apply filter for usersAdapter");
                 }
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(Editable editable)
+            {
 
             }
         });
     }
-
 }

@@ -17,11 +17,12 @@ import java.util.Collections;
 
 import nl.mrwouter.zermelo4j.ZermeloAPI;
 
-public class GetSearchItems extends AsyncTask<Void, Void, Void> {
-
+public class GetSearchItems extends AsyncTask<Void, Void, Void>
+{
     private MainActivity main;
 
-    public GetSearchItems(MainActivity main) {
+    public GetSearchItems(MainActivity main)
+    {
         this.main = main;
     }
 
@@ -30,25 +31,32 @@ public class GetSearchItems extends AsyncTask<Void, Void, Void> {
     private Spinner schoolYears;
 
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected Void doInBackground(Void... voids)
+    {
+        if (main.yearsAdapter == null)
+            new AddYears(main).execute();
 
         this.api = main.api;
         this.schoolYears = main.findViewById(R.id.schoolYear);
 
-        try {
+        try
+        {
             this.schoolInYears = String.valueOf(schoolYears.getSelectedItem());
             main.allStudents = api.getUsers(schoolInYears).getStudentsAsArray();
             main.allStudents.addAll(api.getUsers(schoolInYears).getEmployeesAsArray());
             main.usersAdapter = new ArrayAdapter<>(main, android.R.layout.simple_list_item_1, main.allStudents);
             addClassroomsToMap();
-        } catch(NullPointerException ex) {
+        }
+        catch (NullPointerException ex)
+        {
             Log.e("SearchResultException", "One or more search lists failed to load.");
         }
         return null;
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
+    protected void onPostExecute(Void aVoid)
+    {
         ListView allUsers = main.findViewById(R.id.allUsers);
         allUsers.setAdapter(main.usersAdapter);
         super.onPostExecute(aVoid);

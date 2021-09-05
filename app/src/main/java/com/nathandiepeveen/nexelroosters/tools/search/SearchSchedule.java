@@ -14,11 +14,13 @@ import androidx.cardview.widget.CardView;
 import com.nathandiepeveen.nexelroosters.MainActivity;
 import com.nathandiepeveen.nexelroosters.R;
 
-public class SearchSchedule {
+public class SearchSchedule
+{
 
     private MainActivity main;
 
-    public SearchSchedule(MainActivity main) {
+    public SearchSchedule(MainActivity main)
+    {
         this.main = main;
     }
 
@@ -43,14 +45,19 @@ public class SearchSchedule {
 
         initializeItems();
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                if (searchField.getText().toString().length() != 0) {
+            public void onClick(View view)
+            {
+                if (searchField.getText().toString().length() != 0)
+                {
                     main.scheduleUser = searchField.getText().toString();
                     backButton.startAnimation(fadeIn);
                     backButton.setEnabled(true);
-                } else {
+                }
+                else
+                {
                     main.scheduleUser = "~me";
                     backButton.startAnimation(fadeOut);
                     backButton.setEnabled(false);

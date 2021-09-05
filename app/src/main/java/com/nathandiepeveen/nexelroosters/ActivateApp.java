@@ -21,8 +21,8 @@ import java.util.HashMap;
 
 import nl.mrwouter.zermelo4j.ZermeloAPI;
 
-public class ActivateApp extends AppCompatActivity {
-
+public class ActivateApp extends AppCompatActivity
+{
     Button loginButton;
     TextView koppelCodeText, schoolNameText;
     EditText schoolName, code;
@@ -41,20 +41,22 @@ public class ActivateApp extends AppCompatActivity {
         code = findViewById(R.id.code);
 
         loginButton = findViewById(R.id.loginButton);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 setToken();
             }
         });
 
         getCodeText();
         getSchoolText();
-
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(Configuration newConfig)
+    {
         super.onConfigurationChanged(newConfig);
     }
 
@@ -65,7 +67,7 @@ public class ActivateApp extends AppCompatActivity {
 
     public void goToMain(ZermeloAPI api)
     {
-        if (api.getAccessToken()==null)
+        if (api.getAccessToken() == null)
             return;
 
         Intent intent = new Intent(ActivateApp.this, MainActivity.class);
@@ -76,10 +78,11 @@ public class ActivateApp extends AppCompatActivity {
 
     public void getSchoolText()
     {
-        schoolName.addTextChangedListener(new TextWatcher() {
-
+        schoolName.addTextChangedListener(new TextWatcher()
+        {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after)
+            {
 
             }
 
@@ -90,18 +93,21 @@ public class ActivateApp extends AppCompatActivity {
                 Animation anim_up = AnimationUtils.loadAnimation(ActivateApp.this, R.anim.text_down);
                 Animation anim_down = AnimationUtils.loadAnimation(ActivateApp.this, R.anim.text_up);
 
-                if (count >= 0 && codeState == 1) {
+                if (count >= 0 && codeState == 1)
+                {
                     schoolNameText.startAnimation(anim_up);
                     codeState = 0;
                 }
-                if (schoolName.getText().toString().length() == 0) {
+                if (schoolName.getText().toString().length() == 0)
+                {
                     schoolNameText.startAnimation(anim_down);
                     codeState = 1;
                 }
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(Editable editable)
+            {
 
             }
         });
@@ -109,10 +115,11 @@ public class ActivateApp extends AppCompatActivity {
 
     public void getCodeText()
     {
-        code.addTextChangedListener(new TextWatcher() {
-
+        code.addTextChangedListener(new TextWatcher()
+        {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after)
+            {
 
             }
 
@@ -123,22 +130,24 @@ public class ActivateApp extends AppCompatActivity {
                 Animation anim_up = AnimationUtils.loadAnimation(ActivateApp.this, R.anim.text_down);
                 Animation anim_down = AnimationUtils.loadAnimation(ActivateApp.this, R.anim.text_up);
 
-                if (count >= 0 && nameState == 1) {
+                if (count >= 0 && nameState == 1)
+                {
                     koppelCodeText.startAnimation(anim_up);
                     nameState = 0;
                 }
-                if (code.getText().toString().length() == 0) {
+                if (code.getText().toString().length() == 0)
+                {
                     koppelCodeText.startAnimation(anim_down);
                     nameState = 1;
                 }
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(Editable editable)
+            {
 
             }
 
         });
     }
-
 }

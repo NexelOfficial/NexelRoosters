@@ -16,11 +16,13 @@ import java.io.IOException;
 
 import nl.mrwouter.zermelo4j.ZermeloAPI;
 
-public class WebChecks {
+public class WebChecks
+{
 
     private MainActivity main;
 
-    public WebChecks(MainActivity main) {
+    public WebChecks(MainActivity main)
+    {
         this.main = main;
     }
 
@@ -31,10 +33,13 @@ public class WebChecks {
         ConnectivityManager cm = (ConnectivityManager) main.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         boolean isConnected = cm.getActiveNetworkInfo() != null;
-        if (!isConnected) {
+        if (!isConnected)
+        {
             noInternet.setVisibility(View.VISIBLE);
             refreshButton.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else
+        {
             if (main.allStudents.isEmpty())
                 new GetSearchItems(main).execute();
 
@@ -61,7 +66,8 @@ public class WebChecks {
 
     private Boolean doLoginFileCheck()
     {
-        try {
+        try
+        {
             if (main.readFile("userData.txt").contains(","))
             {
                 String[] data = main.readFile("userData.txt").split(",");
@@ -69,10 +75,13 @@ public class WebChecks {
                 main.token = data[1];
                 main.api = ZermeloAPI.getAPI(main.school, main.token);
                 return true;
-            } else {
+            }
+            else
+            {
                 return false;
             }
-        } catch(NullPointerException | IOException ex) {
+        } catch (NullPointerException | IOException ex)
+        {
             return false;
         }
     }
